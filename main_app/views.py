@@ -18,27 +18,30 @@ BUCKET = 'dogcollector92'
 
 # Create your views here.
 
+
 def signup(request):
     # handle POST Requests (signing up)
     error_message = ''
     if request.method == 'POST':
-        form = UserCreationForm(request.POST) # <= fills out the form with the form values from the request
+        # <= fills out the form with the form values from the request
+        form = UserCreationForm(request.POST)
         # validate form inputs
         if form.is_valid():
             # save the new user to the database
             user = form.save()
             # log the user in
             login(request, user)
-            # redirect the user to the cats index
+            # redirect the user to the dogs index
             return redirect('index')
         else:
-        # if the user form is invalid - show an error message
+            # if the user form is invalid - show an error message
             error_message = 'invalid credentials - please try again'
     # handle GET Requests (navigating the user to the signup page)
     # present the user with a fresh signup form
     form = UserCreationForm()
-    context = {'form': form, 'error': error_message }
+    context = {'form': form, 'error': error_message}
     return render(request, 'registration/signup.html', context)
+
 
 def home(request):
     return render(request, 'home.html')
@@ -47,18 +50,20 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+
 @login_required
 def dogs_index(request):
-    dogs = Dog.objects.all()
+    dogs = Dog.objects.filter(user=request.user)
     return render(request, 'dogs/index.html', {'dogs': dogs})
 
 # update this view function
+
 
 @login_required
 def dogs_detail(request, dog_id):
     dog = Dog.objects.get(id=dog_id)
     if dog.user._id != request.user.id:
-        return redirect ('index')
+        return redirect('index')
     # instantiate FeedingForm to be rendered in the template
     feeding_form = FeedingForm()
 
@@ -73,6 +78,7 @@ def dogs_detail(request, dog_id):
         'toys': toys_dog_doesnt_have
     })
 
+
 @login_required
 def add_feeding(request, dog_id):
     form = FeedingForm(request.POST)
@@ -82,18 +88,20 @@ def add_feeding(request, dog_id):
         new_feeding.save()
     return redirect('detail', dog_id=dog_id)
 
+
 @login_required
 def assoc_toy(request, dog_id, toy_id):
     # Note that you can pass a toy's id instead of the whole object
     Dog.objects.get(id=dog_id).toys.add(toy_id)
     return redirect('detail', dog_id=dog_id)
 
+
 @login_required
 def add_photo(request, dog_id):
     photo_file = request.FILES.get('photo_file', None)
     if photo_file:
-        s3 = boto3.client('s3', aws_access_key_id='',
-                          aws_secret_access_key='')
+        s3 = boto3.client('s3', aws_access_key_id='AKIAX2O3MLQNO7TM7M64',
+                          aws_secret_access_key='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')
         # need a unique "key" for S3 / needs image file extension too
         key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
         # just in case something goes wrong

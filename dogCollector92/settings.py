@@ -119,7 +119,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 
-LOGIN_REDIRECT_URL = '/cats/'
+#changing default login/logout
+
+LOGIN_REDIRECT_URL = '/dogs/'
 LOGOUT_REDIRECT_URL = '/'
 
 # Default primary key field type
