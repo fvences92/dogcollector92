@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import dog, Toy, Photo
+from .models import Dog, Toy, Photo
 from .forms import FeedingForm
 import uuid
 import boto3
@@ -23,14 +23,14 @@ def about(request):
 
 
 def dogs_index(request):
-    dogs = dog.objects.all()
+    dogs = Dog.objects.all()
     return render(request, 'dogs/index.html', {'dogs': dogs})
 
 # update this view function
 
 
 def dogs_detail(request, dog_id):
-    dog = dog.objects.get(id=dog_id)
+    dog = Dog.objects.get(id=dog_id)
     # instantiate FeedingForm to be rendered in the template
     feeding_form = FeedingForm()
 
@@ -57,15 +57,15 @@ def add_feeding(request, dog_id):
 
 def assoc_toy(request, dog_id, toy_id):
     # Note that you can pass a toy's id instead of the whole object
-    dog.objects.get(id=dog_id).toys.add(toy_id)
+    Dog.objects.get(id=dog_id).toys.add(toy_id)
     return redirect('detail', dog_id=dog_id)
 
 
 def add_photo(request, dog_id):
     photo_file = request.FILES.get('photo_file', None)
     if photo_file:
-        s3 = boto3.client('s3', aws_access_key_id='AKIAX2O3MLQNGDFMPXNE', 
-        aws_secret_access_key='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')
+        s3 = boto3.client('s3', aws_access_key_id='AKIAX2O3MLQNKYYCPMUC', 
+        aws_secret_access_key='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')
         # need a unique "key" for S3 / needs image file extension too
         key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
         # just in case something goes wrong
@@ -84,19 +84,19 @@ def add_photo(request, dog_id):
     return redirect('detail', dog_id=dog_id)
 
 
-class dogCreate(CreateView):
-    model = dog
+class DogCreate(CreateView):
+    model = Dog
     fields = '__all__'
     # success_url = '/dogs/'
 
 
-class dogUpdate(UpdateView):
-    model = dog
+class DogUpdate(UpdateView):
+    model = Dog
     fields = ('breed', 'description', 'age')
 
 
-class dogDelete(DeleteView):
-    model = dog
+class DogDelete(DeleteView):
+    model = Dog
     success_url = '/dogs/'
 
 

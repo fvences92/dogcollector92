@@ -17,7 +17,7 @@ class Toy(models.Model):
         return reverse('toys_detail', kwargs={'pk': self.id})
 
 
-class dog(models.Model):
+class Dog(models.Model):
     name = models.CharField(max_length=100)
     breed = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
@@ -41,7 +41,7 @@ class Feeding(models.Model):
     )
 
     # Create a dog_id FK
-    dog = models.ForeignKey(dog, on_delete=models.CASCADE)
+    dog = models.ForeignKey(Dog, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.get_meal_display()} on {self.date}"
@@ -53,7 +53,7 @@ class Feeding(models.Model):
 
 class Photo(models.Model):
     url = models.CharField(max_length=200)
-    dog = models.ForeignKey(dog, on_delete=models.CASCADE)
+    dog = models.ForeignKey(Dog, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Photo for dog _id: {self.dog_id} @{self.url}"
