@@ -12,7 +12,7 @@
                 {% if dog.age > 0 %}
                 <p>Age: {{ dog.age }}</p>
                 {% else %}
-                <p>Age: Kitten</p>
+                <p>Age: Puppy</p>
                 {% endif %}
             </div>
             <div class="card-action">
@@ -24,7 +24,7 @@
         {% for photo in dog.photo_set.all %}
 
         <img src="{{ photo.url }}" alt="{{ dog.name }}" class="responsive-img card-panel">
-        
+
         {% empty %}
         <div class="card-panel teal-text center-align">No Photos Uploaded</div>
         {% endfor %}

@@ -5,7 +5,7 @@
 {% if object %}
 <h1>Edit {{object.name}}'s information</h1>
 {% else %}
-<h1>Add a new Dog</h1>
+<h1>Add a New Dog</h1>
 {% endif %}
 
 <form action="" method="post">
@@ -14,7 +14,7 @@
         {{ form.as_table }}
     </table>
     <!-- we must always use this tag in our forms -->
-    <input class="btn green" type="submit" value="{% if object %} Edit {% else %} Add {% endif %}">
+    <input type="submit" value="{% if object %} Edit {% else %} Add {% endif %}" class="btn green">
 </form>
 
 {% endblock %}

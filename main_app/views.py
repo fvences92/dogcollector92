@@ -64,8 +64,8 @@ def assoc_toy(request, dog_id, toy_id):
 def add_photo(request, dog_id):
     photo_file = request.FILES.get('photo_file', None)
     if photo_file:
-        s3 = boto3.client('s3', aws_access_key_id='AKIAX2O3MLQNKYYCPMUC', 
-        aws_secret_access_key='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')
+        s3 = boto3.client('s3', aws_access_key_id='AKIAX2O3MLQNKYYCPMUC',
+                          aws_secret_access_key='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')
         # need a unique "key" for S3 / needs image file extension too
         key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
         # just in case something goes wrong
